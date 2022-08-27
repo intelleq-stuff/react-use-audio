@@ -1,0 +1,17 @@
+{
+  "name": "use-audio",
+  "version": "0.0.0-semantic-release",
+  "description": "A React Hook for Playing Audio Files",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "VT",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.8.2"
+  }
+}
