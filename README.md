@@ -19,3 +19,8 @@ Or, use NPM:
 ```bash
 npm install use-sound
 ```
+
+### Updating the changelog
+
+As you commit changes to the project, write them down into the [Unreleased] section. Once we trigger a new release,
+unreleased changes are automatically moved under the new version heading.

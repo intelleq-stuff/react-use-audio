@@ -1,5 +1,5 @@
 {
-  "name": "use-audio",
+  "name": "react-use-audio",
   "version": "0.0.0-semantic-release",
   "description": "A React Hook for Playing Audio Files",
   "main": "dist/index.js",
