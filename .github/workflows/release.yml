@@ -29,10 +29,6 @@ jobs:
       #- name: Run tests
       #  run: yarn test
 
-      # Build
-      - name: Build package
-        run: yarn build
-
       # Configure Git
       - name: Git configuration
         run: |
@@ -72,6 +68,10 @@ jobs:
           git add "CHANGELOG.md"
           git commit -m "chore: release ${{ env.NEW_VERSION }}"
           git tag ${{ env.NEW_VERSION }}
+
+      # Build
+      - name: Build package
+        run: yarn build
 
       # Publish version to public repository
       - name: Publish
