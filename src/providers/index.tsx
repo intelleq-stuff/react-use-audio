@@ -16,6 +16,9 @@ export interface AudioPlayerProviderProps {
 }
 
 export function AudioPlayerProvider({children, value}: AudioPlayerProviderProps) {
+  Howler.autoUnlock = true
+  Howler.html5PoolSize = 100
+
   const [player, setPlayer] = useState<Howl | null>(null)
   const [{loading, error, playing, stopped, duration, ready, ended}, dispatch] = useReducer(reducer, initialState)
 
@@ -62,6 +65,7 @@ export function AudioPlayerProvider({children, value}: AudioPlayerProviderProps)
 
     const shouldAutoplay = wasPlaying || autoplay
     const howl = constructHowl({src, autoplay: shouldAutoplay, html5, ...rest})
+
     // @ts-ignore _state exists
     if (howl._state === "loaded") {
       dispatch({type: PlayerActions.ON_LOAD, duration: howl.duration()})
