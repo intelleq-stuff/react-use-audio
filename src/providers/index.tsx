@@ -30,16 +30,17 @@ export function AudioPlayerProvider({children, value}: AudioPlayerProviderProps)
   ), [position, setPosition])
 
   const constructHowl = useCallback((audioProps: HowlOptions): Howl => {
+    console.log('AudioPlayerProvider:constructHowl', {audioProps})
     return new Howl(audioProps)
   }, [])
 
   const load = useCallback(({src, autoplay = false, html5 = false, ...rest}: HowlOptions) => {
-    let wasPlaying = false
+    console.log('AudioPlayerProvider:load:', {src, autoplay, html5, ...rest})
     if (playerRef.current) {
       // @ts-ignore _src exists
       const {_src} = playerRef.current
-      const prevSrc = Array.isArray(_src) ? _src[0] : _src
-      if (prevSrc === src) {
+      if (_src === src) {
+        console.log('SRC', {_src, src})
         return
       }
 
@@ -53,8 +54,7 @@ export function AudioPlayerProvider({children, value}: AudioPlayerProviderProps)
         prevPlayer.current?.unload()
       }
 
-      wasPlaying = playerRef.current.playing()
-      if (wasPlaying) {
+      if (playerRef.current.playing()) {
         playerRef.current.stop()
         playerRef.current.off()
         playerRef.current = undefined
@@ -63,8 +63,7 @@ export function AudioPlayerProvider({children, value}: AudioPlayerProviderProps)
 
     dispatch({type: PlayerActions.START_LOAD})
 
-    const shouldAutoplay = wasPlaying || autoplay
-    const howl = constructHowl({src, autoplay: shouldAutoplay, html5, ...rest})
+    const howl = constructHowl({src, autoplay, html5, ...rest})
 
     // @ts-ignore _state exists
     if (howl._state === "loaded") {
