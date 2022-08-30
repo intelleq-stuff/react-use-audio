@@ -1,14 +1,9 @@
 import React, {ReactNode, useCallback, useEffect, useMemo, useReducer, useRef, useState} from 'react'
-import {AudioPlayerState, initialState} from '../reducers'
+import {initialState} from '../reducers'
 import {HowlOptions, Howl} from 'howler'
 import {reducer} from '../reducers'
 import {PlayerActions} from '../reducers'
-import {playerContext, positionContext} from '../contexts'
-
-interface AudioPlayerContext extends AudioPlayerState {
-  player: Howl | null
-  load: (args: HowlOptions) => void
-}
+import {AudioPlayerContext, playerContext, positionContext} from '../contexts'
 
 export interface AudioPlayerProviderProps {
   children: ReactNode
@@ -31,6 +26,25 @@ export function AudioPlayerProvider({children, value}: AudioPlayerProviderProps)
 
   const constructHowl = useCallback((audioProps: HowlOptions): Howl => {
     return new Howl(audioProps)
+  }, [])
+
+  const preloadFile = useCallback((src: string): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      new Howl({
+        src,
+        preload: true,
+        onload: () => {
+          resolve(`loaded ${src}`)
+        },
+        onloaderror: (id, error) => {
+          reject(error)
+        }
+      })
+    })
+  }, [])
+
+  const preload = useCallback(async (files: string[]): Promise<PromiseSettledResult<string>[]> => {
+    return await Promise.allSettled(files.map(preloadFile))
   }, [])
 
   const load = useCallback(({src, autoplay = false, html5 = false, ...rest}: HowlOptions) => {
@@ -101,8 +115,8 @@ export function AudioPlayerProvider({children, value}: AudioPlayerProviderProps)
   }, [])
 
   const contextValue: AudioPlayerContext = useMemo(() => {
-    return value ? value : {player, load, error, loading, playing, stopped, ready, duration, ended}
-  }, [loading, error, playing, stopped, load, value, player, ready, duration, ended])
+    return value ? value : {player, preload, load, error, loading, playing, stopped, ready, duration, ended}
+  }, [loading, error, playing, stopped, preload, load, value, player, ready, duration, ended])
 
   return (
     <playerContext.Provider value={contextValue}>

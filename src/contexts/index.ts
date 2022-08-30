@@ -4,6 +4,7 @@ import {HowlOptions, Howl} from 'howler'
 
 export interface AudioPlayerContext extends AudioPlayerState {
   player: Howl | null
+  preload: (files: string[]) => Promise<PromiseSettledResult<string>[]>
   load: (args: HowlOptions) => void
 }
 

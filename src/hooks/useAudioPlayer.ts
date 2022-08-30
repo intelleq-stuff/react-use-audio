@@ -16,7 +16,7 @@ export type AudioPlayerControls = AudioPlayerContext & {
 }
 
 export const useAudioPlayer = (options?: HowlOptions): AudioPlayerControls => {
-  const {player, load, ...rest} = useContext(playerContext)!
+  const {player, preload, load, ...rest} = useContext(playerContext)!
 
   useEffect(() => {
     const {src, ...restOptions} = options || {}
@@ -49,8 +49,9 @@ export const useAudioPlayer = (options?: HowlOptions): AudioPlayerControls => {
       ...rest,
       ...boundHowlerMethods,
       player,
+      preload,
       load,
       togglePlayPause
     }
-  }, [rest, player, boundHowlerMethods, load, togglePlayPause])
+  }, [rest, player, boundHowlerMethods, preload, load, togglePlayPause])
 }
