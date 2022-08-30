@@ -1,6 +1,6 @@
 {
   "name": "@intelleq/use-audio",
-  "version": "0.0.4-beta.0",
+  "version": "0.0.5-beta.0",
   "description": "A React Hook for Playing Audio Files",
   "main": "dist/index.js",
   "files": [
